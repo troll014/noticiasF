@@ -1,7 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const admin = require('firebase-admin');
-const serviceAccount = require('./firebase_credentials.json');
+
+// Load Firebase service account credentials from environment variable
+const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT;
+if (!serviceAccountJson) {
+  throw new Error('FIREBASE_SERVICE_ACCOUNT environment variable not set');
+}
+const serviceAccount = JSON.parse(serviceAccountJson);
 
 // Initialize Firebase Admin
 admin.initializeApp({

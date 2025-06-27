@@ -7,8 +7,13 @@ import time
 import json
 import os
 
-# Initialize Firebase Admin SDK with credentials from file
-cred = credentials.Certificate('firebase_credentials.json')
+# Initialize Firebase Admin SDK with credentials from environment variable
+firebase_cred_json = os.environ.get('FIREBASE_SERVICE_ACCOUNT')
+if not firebase_cred_json:
+    raise Exception("FIREBASE_SERVICE_ACCOUNT environment variable not set")
+
+firebase_cred_dict = json.loads(firebase_cred_json)
+cred = credentials.Certificate(firebase_cred_dict)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
